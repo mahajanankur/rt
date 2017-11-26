@@ -4,6 +4,7 @@
 package com.sb.rt.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,10 +79,36 @@ public class ProductController {
 		response.setData(data);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/request", method = RequestMethod.POST)
 	public ResponseEntity<?> requestForProducts(@RequestBody DtoRequestProduct body) {
 		Response response = new Response();
+		productService.requestForProducts(body);
+		response.setSuccess(true);
+		response.setMessage("Products are requested.");
+		response.setData(null);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/request", method = RequestMethod.GET)
+	public ResponseEntity<?> requestProduct(@RequestParam(required = false) String color, @RequestParam(required = false) String size, @RequestParam(required = true) String epc, @RequestParam(required = true) String fittingRoomId) {
+		Response response = new Response();
+		DtoRequestProduct body = new DtoRequestProduct();
+		List<String> epcs = new ArrayList<>();
+		epcs.add(epc);
+		body.setEpcs(epcs);
+		body.setFittingRoomId(fittingRoomId);
+		if (null != color) {
+			List<String> colors = new ArrayList<>();
+			colors.add(color);
+			body.setColors(colors);
+		}
+		if (null != size) {
+			List<String> sizes = new ArrayList<>();
+			sizes.add(size);
+			body.setSizes(sizes);
+		}
+
 		productService.requestForProducts(body);
 		response.setSuccess(true);
 		response.setMessage("Products are requested.");
