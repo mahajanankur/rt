@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd ">
+
+	<context:component-scan base-package="com.sb.rt" />
+	<!-- Database Configuration -->
+	<import resource="DataSource.xml" />
+	<import resource="Hibernate.xml" />
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven />
+
+	<!-- To utilize Apache Commons FileUpload for handling multipart requests, 
+		we need to configure multipartResolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="1000000" />
+	</bean>
+
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven />
+
+	<!-- Configuring interceptors based on URI -->
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**" /> <bean 
+		class="com.shivablast.hasbaba.interceptors.AuthenticationInterceptor"></bean> 
+		</mvc:interceptor> </mvc:interceptors> -->
+</beans>
